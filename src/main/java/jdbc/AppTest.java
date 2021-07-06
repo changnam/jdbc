@@ -44,5 +44,10 @@ public class AppTest {
 		for(Employee emp : employees) {
 			System.out.println(emp.getName()+" , "+emp.getEmail());
 		}
+		
+		employees = (List<Employee>) repository.findByNameContainingIgnoreCase("i");
+		for(Employee emp : employees) {
+			System.out.println(emp.getName()+" , "+emp.getEmail());
+		}
 	}
 }
