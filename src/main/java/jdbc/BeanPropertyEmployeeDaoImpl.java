@@ -40,7 +40,7 @@ public class BeanPropertyEmployeeDaoImpl extends JdbcDaoSupport implements Emplo
 
 	public Employee getEmployee(int id) {
 		String sql = "select * from employee where id = ?";
-		Employee employee = getJdbcTemplate().queryForObject(sql, new Object[] {id},employeeRowMapper);
+		Employee employee = (Employee) getJdbcTemplate().queryForObject(sql, new Object[] {id},employeeRowMapper);
 		return employee;
 	}
 	

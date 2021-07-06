@@ -38,5 +38,11 @@ public class AppTest {
 			System.out.println(emp.getName()+" , "+emp.getEmail());
 		}
 		
+		System.out.println("======= jpa operation =============");
+		EmployeeRepository repository = context.getBean(EmployeeRepository.class);
+		employees = (List<Employee>) repository.findAll();
+		for(Employee emp : employees) {
+			System.out.println(emp.getName()+" , "+emp.getEmail());
+		}
 	}
 }

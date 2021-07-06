@@ -9,6 +9,7 @@
 	the specific language governing permissions and limitations under the License. -->
 
 <beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:p="http://www.springframework.org/schema/p"
 	xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:tx="http://www.springframework.org/schema/tx"
@@ -17,6 +18,7 @@
 	xmlns:oauth="http://www.springframework.org/schema/security/oauth2"
 	xmlns:util="http://www.springframework.org/schema/util"
 	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
 	xsi:schemaLocation="http://www.springframework.org/schema/security/oauth2 http://www.springframework.org/schema/security/spring-security-oauth2.xsd
 		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
@@ -24,9 +26,13 @@
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+		http://www.springframework.org/schema/data/jpa
+        http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 
 	<context:component-scan base-package="jdbc" />
+	<jpa:repositories base-package="jdbc" />
+	<context:annotation-config/>
  
 	<bean id="dsHsql"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
@@ -61,4 +67,23 @@
 		<jdbc:script location="classpath:data-hsqldb.sql" />
 	</jdbc:initialize-database>
 
+   <!-- EntityManagerFactory -->
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
+            p:packagesToScan="jdbc"
+            p:dataSource-ref="dsHsql"
+            >
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+                 <!--<property name="generateDdl" value="true" />-->
+                <property name="showSql" value="false" />
+            </bean>
+        </property>
+    </bean>
+
+    <!-- Transactions -->
+    <tx:annotation-driven transaction-manager="transactionManager" />
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
+    
 </beans>
