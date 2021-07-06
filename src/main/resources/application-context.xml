@@ -49,7 +49,10 @@
 		<property name="dataSource" ref="dsHsql" />
 	</bean>
 
-	<bean id="jdbcEmployeeDao" class="jdbc.EmployeeDaoImpl">
+	<bean id="jdbcEmployeeDao" class="jdbc.JdbcEmployeeDaoImpl">
+		<property name="dataSource" ref="dsHsql" />
+	</bean>
+		<bean id="beanPropertyEmployeeDao" class="jdbc.BeanPropertyEmployeeDaoImpl">
 		<property name="dataSource" ref="dsHsql" />
 	</bean>
 	

@@ -6,14 +6,16 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
-public class JdbcEmployeeDaoImpl extends JdbcDaoSupport implements EmployeeDao{
+public class BeanPropertyEmployeeDaoImpl extends JdbcDaoSupport implements EmployeeDao{
+	private RowMapper employeeRowMapper = new BeanPropertyRowMapper<Employee>(Employee.class);
 	
 	public List<Employee> getAllEmployees() {
 		String sql = "select * from employee";
-		List<Employee> employees = getJdbcTemplate().query(sql, new EmployeeRowMapper());
+		List<Employee> employees = getJdbcTemplate().query(sql,employeeRowMapper);
 		return employees;
 	}
 
@@ -38,20 +40,9 @@ public class JdbcEmployeeDaoImpl extends JdbcDaoSupport implements EmployeeDao{
 
 	public Employee getEmployee(int id) {
 		String sql = "select * from employee where id = ?";
-		Employee employee = getJdbcTemplate().queryForObject(sql, new Object[] {id},new EmployeeRowMapper());
+		Employee employee = getJdbcTemplate().queryForObject(sql, new Object[] {id},employeeRowMapper);
 		return employee;
 	}
 	
 }
 
-final class EmployeeRowMapper implements RowMapper<Employee> {
-
-	public Employee mapRow(ResultSet rs, int rowNum) throws SQLException {
-		Employee employee = new Employee();
-		employee.setId(rs.getInt("id"));
-		employee.setName(rs.getString("name"));
-		employee.setEmail(rs.getString("email"));
-		return employee;
-	}
-	
-}
