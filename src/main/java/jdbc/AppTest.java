@@ -9,7 +9,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class AppTest {
 	public static void main(String[] args) {
 		ApplicationContext context = new ClassPathXmlApplicationContext("classpath:application-context.xml");
-		EmployeeDao eDao = (EmployeeDao) context.getBean("employeeDao",EmployeeDao.class);
+		EmployeeDao eDao = (EmployeeDao) context.getBean("jdbcEmployeeDao",EmployeeDao.class);
 		
 		List<Employee> employees = eDao.getAllEmployees();
 		for(Employee emp : employees) {

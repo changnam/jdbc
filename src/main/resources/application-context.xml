@@ -49,6 +49,10 @@
 		<property name="dataSource" ref="dsHsql" />
 	</bean>
 
+	<bean id="jdbcEmployeeDao" class="jdbc.EmployeeDaoImpl">
+		<property name="dataSource" ref="dsHsql" />
+	</bean>
+	
 	<jdbc:initialize-database data-source="dsHsql">
 		<jdbc:script location="classpath:schema-hsqldb.sql" />
 		<jdbc:script location="classpath:data-hsqldb.sql" />
